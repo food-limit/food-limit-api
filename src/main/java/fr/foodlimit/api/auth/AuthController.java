@@ -1,5 +1,6 @@
-package fr.foodlimit.api;
+package fr.foodlimit.api.auth;
 
+import fr.foodlimit.api.Application;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.user.User;
 import fr.foodlimit.api.user.UserService;
@@ -25,7 +26,7 @@ public class AuthController {
   private final AuthenticationManager authenticationManager;
 
   public AuthController(PasswordEncoder passwordEncoder, UserService userService,
-      TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+                        TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
     this.userService = userService;
     this.tokenProvider = tokenProvider;
     this.passwordEncoder = passwordEncoder;
@@ -48,15 +49,14 @@ public class AuthController {
 
   @PostMapping("/login")
   public String authorize(@Valid @RequestBody User loginUser,
-      HttpServletResponse response) {
+                          HttpServletResponse response) {
     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-        loginUser.getUsername(), loginUser.getPassword());
+      loginUser.getUsername(), loginUser.getPassword());
 
     try {
       this.authenticationManager.authenticate(authenticationToken);
       return this.tokenProvider.createToken(loginUser.getUsername());
-    }
-    catch (AuthenticationException e) {
+    } catch (AuthenticationException e) {
       Application.logger.info("Security exception {}", e.getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return null;

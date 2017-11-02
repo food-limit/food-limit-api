@@ -12,36 +12,42 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final TokenProvider tokenProvider;
+  private final TokenProvider tokenProvider;
 
-    public SecurityConfig(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
+  public SecurityConfig(TokenProvider tokenProvider) {
+    this.tokenProvider = tokenProvider;
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .disable()
-                .cors()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/signup").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/public").permitAll()
-                .antMatchers("/ping").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JWTConfigurer(this.tokenProvider));
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+      .headers()
+      .frameOptions()
+      .disable()
+      .and()
+      .csrf()
+      .disable()
+      .cors()
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .authorizeRequests()
+      .antMatchers("/signup").permitAll()
+      .antMatchers("/login").permitAll()
+      .antMatchers("/public").permitAll()
+      .antMatchers("/ping").permitAll()
+      .antMatchers("/h2/**").permitAll()
+      .antMatchers("/v2/api-docs/**").permitAll()
+      .anyRequest().authenticated()
+      .and()
+      .apply(new JWTConfigurer(this.tokenProvider));
+  }
 
 }

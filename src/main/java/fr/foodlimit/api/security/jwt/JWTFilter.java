@@ -35,7 +35,7 @@ public class JWTFilter extends GenericFilterBean {
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-      FilterChain filterChain) throws IOException, ServletException {
+                       FilterChain filterChain) throws IOException, ServletException {
     try {
       HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
       String jwt = resolveToken(httpServletRequest);
@@ -46,12 +46,11 @@ public class JWTFilter extends GenericFilterBean {
         }
       }
       filterChain.doFilter(servletRequest, servletResponse);
-    }
-    catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException
-        | SignatureException | UsernameNotFoundException e) {
+    } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException
+      | SignatureException | UsernameNotFoundException e) {
       Application.logger.info("Security exception {}", e.getMessage());
       ((HttpServletResponse) servletResponse)
-          .setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        .setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
   }
 
