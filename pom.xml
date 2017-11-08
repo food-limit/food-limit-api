@@ -23,9 +23,9 @@
 		<java.version>1.8</java.version>
 		<flyway.version>4.2.0</flyway.version>
 		<postgres.driver.version>9.2-1002.jdbc4</postgres.driver.version>
-		<database.url>jdbc:postgresql://webtp.fil.univ-lille1.fr:5432/${database_name}</database.url>
-		<database.user>${user}</database.user>
-		<databese.password>${password}</databese.password>
+		<database.url>jdbc:postgresql://webtp.fil.univ-lille1.fr:5432/morhib</database.url>
+		<database.user>morhib</database.user>
+		<databese.password>ki_ka456</databese.password>
 	</properties>
 
 	<dependencies>
@@ -68,9 +68,9 @@
 					<locations>
 						<location>filesystem:src/main/resources/db/migration</location>
 					</locations>
-					<url>jdbc:postgresql://webtp.fil.univ-lille1.fr:5432/${database_name}</url>
-					<user>${user}</user>
-					<password>${password}</password>
+					<url>jdbc:postgresql://webtp.fil.univ-lille1.fr:5432/morhib</url>
+					<user>morhib</user>
+					<password>ki_ka456</password>
 				</configuration>
 				<dependencies>
 					<dependency>

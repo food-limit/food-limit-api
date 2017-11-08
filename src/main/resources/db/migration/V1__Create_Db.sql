@@ -28,12 +28,13 @@ CONSTRAINT fk_home_person_mail FOREIGN KEY(home_person_mail) REFERENCES person(p
 
 
 CREATE TABLE Product(
+product_id SERIAL,
 product_barcode varchar(13),
 product_name varchar(50),
 product_dlc date,
 product_qte int,
 product_image varchar(255),
 product_home_id varchar(50),
-CONSTRAINT pk_product_barcode PRIMARY KEY(product_barcode),
+CONSTRAINT pk_product_barcode PRIMARY KEY(product_id),
 CONSTRAINT fk_product_home FOREIGN KEY(product_home_id) REFERENCES home(home_id)
 );
