@@ -21,16 +21,16 @@ public class AppUserDetailService implements UserDetailsService {
 
   @Override
   public final UserDetails loadUserByUsername(String username)
-      throws UsernameNotFoundException {
+    throws UsernameNotFoundException {
     final User user = this.userService.lookup(username);
     if (user == null) {
       throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
     return org.springframework.security.core.userdetails.User.withUsername(username)
-        .password(user.getPassword()).authorities(Collections.emptyList())
-        .accountExpired(false).accountLocked(false).credentialsExpired(false)
-        .disabled(false).build();
+      .password(user.getPassword()).authorities(Collections.emptyList())
+      .accountExpired(false).accountLocked(false).credentialsExpired(false)
+      .disabled(false).build();
   }
 
 }

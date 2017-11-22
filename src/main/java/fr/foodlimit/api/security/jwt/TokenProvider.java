@@ -33,17 +33,17 @@ public class TokenProvider {
     Date validity = new Date(now.getTime() + this.tokenValidityInMilliseconds);
 
     return Jwts.builder().setId(UUID.randomUUID().toString()).setSubject(username)
-        .setIssuedAt(now).signWith(SignatureAlgorithm.HS512, this.secretKey)
-        .setExpiration(validity).compact();
+      .setIssuedAt(now).signWith(SignatureAlgorithm.HS512, this.secretKey)
+      .setExpiration(validity).compact();
   }
 
   public Authentication getAuthentication(String token) {
     String username = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token)
-        .getBody().getSubject();
+      .getBody().getSubject();
     UserDetails userDetails = this.userService.loadUserByUsername(username);
 
     return new UsernamePasswordAuthenticationToken(userDetails, "",
-        userDetails.getAuthorities());
+      userDetails.getAuthorities());
   }
 
 }

@@ -7,6 +7,8 @@ security:
     - none
 
 spring:
+  profiles:
+    active: dev
   mvc:
     favicon:
       enabled: false
