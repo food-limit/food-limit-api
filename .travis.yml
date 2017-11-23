@@ -6,6 +6,8 @@ addons:
     organization: "food-limit"
     token:
       secure: $SONAR_TOKEN
+    github_token:
+      secure: $GITHUB_TOKEN
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 deploy:
