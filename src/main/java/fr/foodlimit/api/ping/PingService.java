@@ -10,6 +10,6 @@ public class PingService {
   PingRepository pingRepository;
 
   public String getPing() {
-    return pingRepository.findOne(new Long(1)).getTitle();
+    return pingRepository.findById(new Long(1)).get().getTitle();
   }
 }
