@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class AppConfig {
   @SuppressWarnings("squid:S1068")
   private String secret;
-  
+
   @SuppressWarnings("squid:S1068")
   private long tokenValidityInSeconds;
 }
