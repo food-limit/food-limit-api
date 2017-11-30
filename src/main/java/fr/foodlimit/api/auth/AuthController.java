@@ -1,5 +1,6 @@
-package fr.foodlimit.api;
+package fr.foodlimit.api.auth;
 
+import fr.foodlimit.api.Application;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.user.User;
 import fr.foodlimit.api.user.UserService;
