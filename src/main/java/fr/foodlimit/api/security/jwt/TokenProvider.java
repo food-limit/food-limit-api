@@ -1,6 +1,6 @@
 package fr.foodlimit.api.security.jwt;
 
-import fr.foodlimit.api.AppConfig;
+import fr.foodlimit.api.config.AppConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
