@@ -31,11 +31,6 @@ public class AuthController {
     this.tokenProvider = tokenProvider;
     this.passwordEncoder = passwordEncoder;
     this.authenticationManager = authenticationManager;
-
-    User user = new User();
-    user.setUsername("admin");
-    user.setPassword(this.passwordEncoder.encode("admin"));
-    this.userService.save(user);
   }
 
   @GetMapping("/authenticate")

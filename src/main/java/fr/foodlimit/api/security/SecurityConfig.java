@@ -4,6 +4,7 @@ import fr.foodlimit.api.security.jwt.JWTConfigurer;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -46,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/ping").permitAll()
       .antMatchers("/h2/**").permitAll()
       .antMatchers("/v2/api-docs/**").permitAll()
+      .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
       .anyRequest().authenticated()
       .and()
       .apply(new JWTConfigurer(this.tokenProvider));
