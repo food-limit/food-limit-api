@@ -1,5 +1,7 @@
 package fr.foodlimit.api.shared.models;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,14 +18,15 @@ public class Food {
 
   private String name;
 
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDate dlc;
 
   private Integer quantity;
 
   private String picture;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="user_id")
+  @ManyToOne
+  @JoinColumn(name="USER_ID")
   private User user;
 }
 

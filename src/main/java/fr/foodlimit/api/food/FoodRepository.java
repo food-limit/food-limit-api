@@ -11,4 +11,8 @@ import java.util.List;
 public interface FoodRepository extends CrudRepository<Food, Long> {
 
   List<Food> findByUser(User user);
+
+  Food findById(int id);
+
+  void deleteById(int id);
 }
