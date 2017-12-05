@@ -38,12 +38,16 @@ public class TokenProvider {
   }
 
   public Authentication getAuthentication(String token) {
-    String username = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token)
-      .getBody().getSubject();
+    String username = this.getUsername(token);
     UserDetails userDetails = this.userService.loadUserByUsername(username);
 
     return new UsernamePasswordAuthenticationToken(userDetails, "",
       userDetails.getAuthorities());
+  }
+
+  public String getUsername(String token) {
+    return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token)
+      .getBody().getSubject();
   }
 
 }
