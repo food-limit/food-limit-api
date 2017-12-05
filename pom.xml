@@ -103,6 +103,7 @@
           <excludes>
             <exclude>**/security/**</exclude>
             <exclude>**/shared/models/**</exclude>
+            <exclude>**/config/**</exclude>
           </excludes>
         </configuration>
         <executions>
