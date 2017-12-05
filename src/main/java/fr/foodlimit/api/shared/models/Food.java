@@ -1,6 +1,5 @@
-package fr.foodlimit.api.food;
+package fr.foodlimit.api.shared.models;
 
-import fr.foodlimit.api.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,6 +25,5 @@ public class Food {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="user_id")
   private User user;
-
 }
 

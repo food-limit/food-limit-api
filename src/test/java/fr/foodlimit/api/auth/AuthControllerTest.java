@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import fr.foodlimit.api.Application;
 import fr.foodlimit.api.food.FoodService;
 import fr.foodlimit.api.security.jwt.TokenProvider;
-import fr.foodlimit.api.user.User;
+import fr.foodlimit.api.shared.models.User;
 import fr.foodlimit.api.user.UserService;
 import org.junit.Before;
 import org.junit.Test;

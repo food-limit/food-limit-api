@@ -2,7 +2,7 @@ package fr.foodlimit.api.auth;
 
 import fr.foodlimit.api.Application;
 import fr.foodlimit.api.security.jwt.TokenProvider;
-import fr.foodlimit.api.user.User;
+import fr.foodlimit.api.shared.models.User;
 import fr.foodlimit.api.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

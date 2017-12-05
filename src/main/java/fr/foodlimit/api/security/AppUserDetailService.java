@@ -1,6 +1,6 @@
 package fr.foodlimit.api.security;
 
-import fr.foodlimit.api.user.User;
+import fr.foodlimit.api.shared.models.User;
 import fr.foodlimit.api.user.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

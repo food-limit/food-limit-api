@@ -1,5 +1,6 @@
 package fr.foodlimit.api.user;
 
+import fr.foodlimit.api.shared.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

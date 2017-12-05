@@ -101,7 +101,8 @@
         <version>0.7.5.201505241946</version>
         <configuration>
           <excludes>
-            <exclude>**/security/*</exclude>
+            <exclude>**/security/**</exclude>
+            <exclude>**/shared/models/**</exclude>
           </excludes>
         </configuration>
         <executions>

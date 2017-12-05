@@ -1,6 +1,7 @@
 package fr.foodlimit.api.user;
 
 import fr.foodlimit.api.Application;
+import fr.foodlimit.api.shared.models.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

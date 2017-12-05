@@ -1,6 +1,7 @@
 package fr.foodlimit.api.ping;
 
 import fr.foodlimit.api.Application;
+import fr.foodlimit.api.shared.models.Ping;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

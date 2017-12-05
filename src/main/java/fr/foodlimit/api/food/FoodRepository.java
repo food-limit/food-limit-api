@@ -1,6 +1,7 @@
 package fr.foodlimit.api.food;
 
-import fr.foodlimit.api.user.User;
+import fr.foodlimit.api.shared.models.Food;
+import fr.foodlimit.api.shared.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

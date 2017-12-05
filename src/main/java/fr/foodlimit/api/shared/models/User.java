@@ -1,6 +1,5 @@
-package fr.foodlimit.api.user;
+package fr.foodlimit.api.shared.models;
 
-import fr.foodlimit.api.food.Food;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

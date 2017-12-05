@@ -2,6 +2,7 @@ package fr.foodlimit.api.food;
 
 import fr.foodlimit.api.Application;
 import fr.foodlimit.api.security.jwt.TokenProvider;
+import fr.foodlimit.api.shared.models.Food;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

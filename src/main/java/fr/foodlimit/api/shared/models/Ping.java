@@ -1,4 +1,4 @@
-package fr.foodlimit.api.ping;
+package fr.foodlimit.api.shared.models;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class Ping {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String title;
