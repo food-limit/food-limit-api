@@ -1,5 +1,6 @@
 package fr.foodlimit.api.shared.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -23,6 +24,7 @@ public class User {
 
   private String password;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Food> foods;
 
@@ -30,4 +32,13 @@ public class User {
     this.password = passwordEncoder.encode(this.password);
   }
 
+  @Override
+  public String toString() {
+    return "User{" +
+      "username='" + username + '\'' +
+      ", name='" + name + '\'' +
+      ", email='" + email + '\'' +
+      ", password='" + password + '\'' +
+      '}';
+  }
 }

@@ -19,4 +19,28 @@ public class FoodService {
 
     return foodRepository.findByUser(user);
   }
+
+  public Food getFood(Long id) {
+    return foodRepository.findById(id).get();
+  }
+
+  public void deleteFood(Long id) {
+    foodRepository.deleteById(id);
+  }
+
+  public Food createFood(Food food, String username) {
+    food.setId(null);
+    User user = new User();
+    user.setUsername(username);
+    food.setUser(user);
+    return foodRepository.save(food);
+  }
+
+  public Food updateFood(Food food, String username) {
+    food.setId(food.getId());
+    User user = new User();
+    user.setUsername(username);
+    food.setUser(user);
+    return foodRepository.save(food);
+  }
 }
