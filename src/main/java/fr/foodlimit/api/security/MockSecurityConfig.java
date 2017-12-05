@@ -11,13 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-@Profile("dev, prod")
+@Profile("test")
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class MockSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final TokenProvider tokenProvider;
 
-  public SecurityConfig(TokenProvider tokenProvider) {
+  public MockSecurityConfig(TokenProvider tokenProvider) {
     this.tokenProvider = tokenProvider;
   }
 
@@ -42,17 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
       .authorizeRequests()
-      .antMatchers("/authenticate").permitAll()
-      .antMatchers("/signup").permitAll()
-      .antMatchers("/login").permitAll()
-      .antMatchers("/public").permitAll()
-      .antMatchers("/ping").permitAll()
-      .antMatchers("/h2/**").permitAll()
-      .antMatchers("/v2/api-docs/**").permitAll()
-      .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-      .anyRequest().authenticated()
-      .and()
-      .apply(new JWTConfigurer(this.tokenProvider));
+      .antMatchers("/**").permitAll();
   }
 
 }

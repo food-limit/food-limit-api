@@ -16,12 +16,4 @@ public class Ping {
   private Long id;
 
   private String title;
-
-  public Ping() {
-    
-  }
-
-  public Ping(String title) {
-    this.title = title;
-  }
 }
