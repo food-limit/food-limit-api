@@ -6,4 +6,5 @@ spring:
     driver-class-name: org.postgresql.Driver
     platform: prod
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
