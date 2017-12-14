@@ -7,6 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Classe métier représentant un utilisateur
+ */
 @Data
 @Entity
 @Table(name="user_profile")
@@ -26,6 +29,10 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Food> foods;
 
+  /**
+   * Encode le mot de passe de l'utilisateur
+   * @param passwordEncoder
+   */
   public void encodePassword(PasswordEncoder passwordEncoder) {
     this.password = passwordEncoder.encode(this.password);
   }

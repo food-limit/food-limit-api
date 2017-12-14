@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 
+/**
+ * Service permettant de récupérer les informations d'un utilisateur
+ */
 @Component
 public class AppUserDetailService implements UserDetailsService {
 
@@ -19,6 +22,12 @@ public class AppUserDetailService implements UserDetailsService {
     this.userService = userService;
   }
 
+  /**
+   * Récupère un utilisateur par son identifiant
+   * @param username
+   * @return
+   * @throws UsernameNotFoundException
+   */
   @Override
   public final UserDetails loadUserByUsername(String username)
     throws UsernameNotFoundException {

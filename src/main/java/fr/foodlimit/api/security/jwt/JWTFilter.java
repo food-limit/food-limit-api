@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Filters incoming requests and installs a Spring Security principal if a header
- * corresponding to a valid user is found.
+ * Ce filtre capte les requêtes  entrantes et met en place Spring Security si un en-tête correspondant à un utilisateur valide est trouvé.
  */
 public class JWTFilter extends GenericFilterBean {
 

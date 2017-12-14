@@ -7,6 +7,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Classe métier représentant une denrée alimentaire
+ */
 @Entity
 @Data
 @SuppressWarnings("squid:S1068")

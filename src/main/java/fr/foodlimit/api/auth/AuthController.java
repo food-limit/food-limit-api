@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+/**
+ * Ressource AuthController
+ *
+ * Cette ressource sert à l'authentification sur Food Limit
+ */
 @RestController
 @CrossOrigin
 public class AuthController {
@@ -33,15 +38,19 @@ public class AuthController {
     this.authenticationManager = authenticationManager;
   }
 
+  /**
+   * Check si l'utilisateur est authentifié
+   */
   @GetMapping("/authenticate")
   public void authenticate() {
-    // we don't have to do anything here
-    // this is just a secure endpoint and the JWTFilter
-    // validates the token
-    // this service is called at startup of the app to check
-    // if the fr.foodlimit.foodlimitapi token is still valid
   }
 
+  /**
+   * Permet de logger un utilisateur sur l'application
+   * @param loginUser
+   * @param response
+   * @return
+   */
   @PostMapping("/login")
   public String authorize(@Valid @RequestBody User loginUser,
                           HttpServletResponse response) {
@@ -58,6 +67,11 @@ public class AuthController {
     }
   }
 
+  /**
+   * Permet d'inscrire un utilisateur sur l'application
+   * @param signupUser
+   * @return
+   */
   @PostMapping("/signup")
   public String signup(@RequestBody User signupUser) {
     if (this.userService.usernameExists(signupUser.getUsername())) {

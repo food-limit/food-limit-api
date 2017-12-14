@@ -4,6 +4,9 @@ import fr.foodlimit.api.shared.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service permettant d'effectuer des actions pour la classe User
+ */
 @Service
 public class UserService {
 

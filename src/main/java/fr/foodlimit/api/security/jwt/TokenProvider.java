@@ -13,6 +13,9 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Composant permettant de créer des JWT
+ */
 @Component
 public class TokenProvider {
 
@@ -28,6 +31,11 @@ public class TokenProvider {
     this.userService = userService;
   }
 
+  /**
+   * Création d'un token
+   * @param username
+   * @return
+   */
   public String createToken(String username) {
     Date now = new Date();
     Date validity = new Date(now.getTime() + this.tokenValidityInMilliseconds);
@@ -37,6 +45,11 @@ public class TokenProvider {
       .setExpiration(validity).compact();
   }
 
+  /**
+   * Récupéreration de l'utilisateur concerné par le JWT
+   * @param token
+   * @return
+   */
   public Authentication getAuthentication(String token) {
     String username = this.getUsername(token);
     UserDetails userDetails = this.userService.loadUserByUsername(username);
@@ -45,6 +58,11 @@ public class TokenProvider {
       userDetails.getAuthorities());
   }
 
+  /**
+   * Récupération de l'identifiant en fonction d'un token
+   * @param token
+   * @return
+   */
   public String getUsername(String token) {
     return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token)
       .getBody().getSubject();
