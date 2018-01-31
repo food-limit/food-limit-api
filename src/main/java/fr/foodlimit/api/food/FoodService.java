@@ -18,6 +18,14 @@ public class FoodService {
 
   /**
    * Récupère un aliment de l'utilisateur
+   * @return
+   */
+  public Iterable<Food> getFoods() {
+    return foodRepository.findAll();
+  }
+
+  /**
+   * Récupère un aliment de l'utilisateur
    * @param username
    * @return
    */
