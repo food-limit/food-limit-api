@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,18 @@ import java.util.Date;
 import java.util.Iterator;
 
 @Component
+@ConfigurationProperties("onesignal")
 public class ScheduledTasks {
   @Autowired
   FoodService foodService;
 
+  private String url;
+  private String apiKey;
+  private String appGoogleId;
+
   private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-  @Scheduled(fixedRate = 5000)
+  @Scheduled(cron="0 0 17 * * *")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
@@ -44,17 +50,17 @@ public class ScheduledTasks {
   private void sendNotif(HttpClient httpClient, Food food) throws IOException {
     try {
       // Build request
-      HttpPost request = new HttpPost("https://onesignal.com/api/v1/notifications");
+      HttpPost request = new HttpPost(url);
 
       // Headers
       request.addHeader("Content-Type", "application/json");
-      request.addHeader("Authorization", "Basic ZDMzN2M2NTgtMzZiMy00OGRjLTk4MzUtNmRmOTA0MWFkYmNm");
+      request.addHeader("Authorization", apiKey);
 
       // Body
       JSONObject json = new JSONObject();
-      json.put("app_id", "e4dc2ee4-9388-4706-b699-fe8c493eb5d0");
+      json.put("app_id", appGoogleId);
       json.put("headings", new JSONObject().put("en", "FOOD-LIMIT"));
-      json.put("contents", new JSONObject().put("en", "Votre alliment '"+food.getName()+"' arrive à sa date de péremption !"));
+      json.put("contents", new JSONObject().put("en", "Votre aliment '"+food.getName()+"' arrive à sa date de péremption !"));
       json.put("filters", new JSONArray().put(
         new JSONObject()
           .put("field", "tag")
