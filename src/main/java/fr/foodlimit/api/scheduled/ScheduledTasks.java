@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,19 +25,26 @@ import java.util.Date;
 import java.util.Iterator;
 
 @Component
-@ConfigurationProperties("onesignal")
 public class ScheduledTasks {
   @Autowired
   FoodService foodService;
 
+  @Value("${onesignal.url}")
   private String url;
+  @Value("${onesignal.api-key}")
   private String apiKey;
-  private String appGoogleId;
+  @Value("${onesignal.app-id}")
+  private String appId;
 
   private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-  @Scheduled(cron="30 17 * * * *")
+  @Scheduled(cron="0 02 18 * * *")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
+    System.out.println("hello");
+    System.out.println(url);
+    System.out.println(apiKey);
+    System.out.println(appId);
+
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
       Food food = i.next();
@@ -54,11 +62,11 @@ public class ScheduledTasks {
 
       // Headers
       request.addHeader("Content-Type", "application/json");
-      request.addHeader("Authorization", apiKey);
+      request.addHeader("Authorization", "Basic " + apiKey);
 
       // Body
       JSONObject json = new JSONObject();
-      json.put("app_id", appGoogleId);
+      json.put("app_id", appId);
       json.put("headings", new JSONObject().put("en", "FOOD-LIMIT"));
       json.put("contents", new JSONObject().put("en", "Votre aliment '"+food.getName()+"' arrive à sa date de péremption !"));
       json.put("filters", new JSONArray().put(
