@@ -38,9 +38,8 @@ public class ScheduledTasks {
 
   private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-  @Scheduled(cron="0 02 18 * * *")
+  @Scheduled(cron="0 0 19 * * *")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
-    System.out.println("hello");
     System.out.println(url);
     System.out.println(apiKey);
     System.out.println(appId);
