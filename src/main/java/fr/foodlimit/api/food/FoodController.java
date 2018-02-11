@@ -1,12 +1,10 @@
 package fr.foodlimit.api.food;
 
-import fr.foodlimit.api.security.jwt.JWTFilter;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Food;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/foods")
+@RequestMapping("/places/{placeId}/foods")
 public class FoodController {
 
   private final TokenProvider tokenProvider;
@@ -30,12 +28,12 @@ public class FoodController {
 
   /**
    * Récupère la liste des aliments de l'utilisateur
-   * @param request
+   * @param placeId
    * @return
    */
   @GetMapping
-  public List<Food> getFoods(HttpServletRequest request) {
-    return foodService.getFoods(tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+  public List<Food> getFoods(@PathVariable("placeId") Long placeId) {
+    return foodService.getFoods(placeId);
   }
 
   /**
@@ -59,26 +57,26 @@ public class FoodController {
 
   /**
    * Créé un aliment pour l'utilisateur
-   * @param request
+   * @param placeId
    * @param food
    * @return
    */
   @PostMapping
-  public Food createFood(HttpServletRequest request, @RequestBody Food food) {
-    return foodService.createFood(food, tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+  public Food createFood(@PathVariable("placeId") Long placeId, @RequestBody Food food) {
+    return foodService.createFood(food, placeId);
   }
 
   /**
    * Modifie un aliment de l'utilisateur
-   * @param request
+   * @param placeId
    * @param id
    * @param food
    * @return
    */
   @PutMapping("/{id}")
-  public Food updateFood(HttpServletRequest request, @PathVariable("id") Long id, @RequestBody Food food) {
+  public Food updateFood(@PathVariable("placeId") Long placeId, @PathVariable("id") Long id, @RequestBody Food food) {
     food.setId(id);
-    return foodService.updateFood(food,tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+    return foodService.updateFood(food,placeId);
   }
 }
 

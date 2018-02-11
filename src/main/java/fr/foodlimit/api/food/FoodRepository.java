@@ -1,7 +1,7 @@
 package fr.foodlimit.api.food;
 
 import fr.foodlimit.api.shared.models.Food;
-import fr.foodlimit.api.shared.models.User;
+import fr.foodlimit.api.shared.models.Place;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +14,11 @@ import java.util.List;
 public interface FoodRepository extends CrudRepository<Food, Long> {
 
   /**
-   * Récupère une liste d'aliments en fonction de l'utilisateur
-   * @param user
+   * Récupère une liste d'aliments en fonction d'un foyer
+   * @param place
    * @return
    */
-  List<Food> findByUser(User user);
+  List<Food> findByPlace(Place place);
 
   /**
    * Récupère une denrée alimentaire par l'id
