@@ -17,14 +17,6 @@ public class FoodService {
   FoodRepository foodRepository;
 
   /**
-   * Récupère tous aliments
-   * @return
-   */
-  public Iterable<Food> getFoods() {
-    return foodRepository.findAll();
-  }
-
-  /**
    * Récupère les aliments de l'utilisateur
    * @param placeId
    * @return
