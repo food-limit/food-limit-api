@@ -26,63 +26,63 @@ import java.util.Iterator;
 
 @Component
 public class ScheduledTasks {
-  @Autowired
-  FoodService foodService;
-
-  @Value("${onesignal.url}")
-  private String url;
-  @Value("${onesignal.api-key}")
-  private String apiKey;
-  @Value("${onesignal.app-id}")
-  private String appId;
-
-  private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
-
-  @Scheduled(cron="0 0 19 * * *")
-  public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
-    System.out.println(url);
-    System.out.println(apiKey);
-    System.out.println(appId);
-
-    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-    for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
-      Food food = i.next();
-      if(LocalDate.now().plusDays(3).isAfter(food.getDlc())){
-        this.sendNotif(httpClient, food);
-      }
-    }
-    httpClient.close();
-  }
-
-  private void sendNotif(HttpClient httpClient, Food food) throws IOException {
-    try {
-      // Build request
-      HttpPost request = new HttpPost(url);
-
-      // Headers
-      request.addHeader("Content-Type", "application/json");
-      request.addHeader("Authorization", "Basic " + apiKey);
-
-      // Body
-      JSONObject json = new JSONObject();
-      json.put("app_id", appId);
-      json.put("headings", new JSONObject().put("en", "FOOD-LIMIT"));
-      json.put("contents", new JSONObject().put("en", "Votre aliment '"+food.getName()+"' arrive à sa date de péremption !"));
-      json.put("filters", new JSONArray().put(
-        new JSONObject()
-          .put("field", "tag")
-          .put("key", "username")
-          .put("relation", "=")
-          .put("value", food.getUser().getUsername())
-      ));
-      StringEntity body = new StringEntity(json.toString());
-      request.setEntity(body);
-
-      // Execute
-      httpClient.execute(request);
-      log.info(request.toString());
-    } catch (Exception ex) {
-      log.error(ex.getMessage());
-    }
-  }
+//  @Autowired
+//  FoodService foodService;
+//
+//  @Value("${onesignal.url}")
+//  private String url;
+//  @Value("${onesignal.api-key}")
+//  private String apiKey;
+//  @Value("${onesignal.app-id}")
+//  private String appId;
+//
+//  private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
+//
+//  @Scheduled(cron="0 0 19 * * *")
+//  public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
+//    System.out.println(url);
+//    System.out.println(apiKey);
+//    System.out.println(appId);
+//
+//    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+//    for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
+//      Food food = i.next();
+//      if(LocalDate.now().plusDays(3).isAfter(food.getDlc())){
+//        this.sendNotif(httpClient, food);
+//      }
+//    }
+//    httpClient.close();
+//  }
+//
+//  private void sendNotif(HttpClient httpClient, Food food) throws IOException {
+//    try {
+//      // Build request
+//      HttpPost request = new HttpPost(url);
+//
+//      // Headers
+//      request.addHeader("Content-Type", "application/json");
+//      request.addHeader("Authorization", "Basic " + apiKey);
+//
+//      // Body
+//      JSONObject json = new JSONObject();
+//      json.put("app_id", appId);
+//      json.put("headings", new JSONObject().put("en", "FOOD-LIMIT"));
+//      json.put("contents", new JSONObject().put("en", "Votre aliment '"+food.getName()+"' arrive à sa date de péremption !"));
+//      json.put("filters", new JSONArray().put(
+//        new JSONObject()
+//          .put("field", "tag")
+//          .put("key", "username")
+//          .put("relation", "=")
+//          .put("value", food.getUser().getUsername())
+//      ));
+//      StringEntity body = new StringEntity(json.toString());
+//      request.setEntity(body);
+//
+//      // Execute
+//      httpClient.execute(request);
+//      log.info(request.toString());
+//    } catch (Exception ex) {
+//      log.error(ex.getMessage());
+//    }
+//  }
 }

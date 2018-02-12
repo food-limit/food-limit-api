@@ -2,6 +2,7 @@ package fr.foodlimit.api.food;
 
 import fr.foodlimit.api.Application;
 import fr.foodlimit.api.shared.models.Food;
+import fr.foodlimit.api.shared.models.Place;
 import fr.foodlimit.api.shared.models.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,36 +34,41 @@ public class FoodServiceTest {
   FoodRepository foodRepository;
 
   User user;
-
-  List<Food> foods;
+  List<Place> places;
 
   @Before
   public void init() {
-    this.foods = new ArrayList<>();
+    List<Food> foods = new ArrayList<>();
     Food yahourt = new Food();
     yahourt.setName("yahourt");
-    this.foods.add(yahourt);
+    foods.add(yahourt);
+
+    Place maison = new Place();
+    maison.setName("maison");
+    maison.setFoods(foods);
+    this.places = new ArrayList<>();
+    places.add(maison);
 
     user = new User();
     user.setUsername("test");
     user.setEmail("test@test.fr");
     user.setPassword("$2a$12$I6nKjXN24kFy6Q1sB5EHUeK/wRe7u7LnPesWUHOPKvGah4eGgygvy");
     user.setName("Test Test");
-    user.setFoods(foods);
+    user.setPlaces(this.places);
   }
 
   @Test
   public void shouldGetFoods() {
-    when(this.foodRepository.findByUser(Mockito.any())).thenReturn(user.getFoods());
+    when(this.foodRepository.findByPlace(Mockito.any())).thenReturn(user.getPlaces().get(0).getFoods());
 
-    assertEquals(this.foodService.getFoods("test"), user.getFoods());
+    assertEquals(this.foodService.getFoods(1L), user.getPlaces().get(0).getFoods());
   }
 
   @Test
   public void shouldGetFood() {
-    when(this.foodRepository.findById(1L)).thenReturn(Optional.of(this.foods.get(0)));
+    when(this.foodRepository.findById(1L)).thenReturn(Optional.of(this.places.get(0).getFoods().get(0)));
 
-    assertEquals(this.foodService.getFood(1L), user.getFoods().get(0));
+    assertEquals(this.foodService.getFood(1L), user.getPlaces().get(0).getFoods().get(0));
   }
 
   @Test
@@ -83,8 +89,8 @@ public class FoodServiceTest {
 
     when(this.foodRepository.save(Mockito.any())).thenReturn(food);
 
-    assertEquals(this.foodService.createFood(food, "test").getId(), null);
-    assertEquals(this.foodService.createFood(food, "test").getName(), food.getName());
+    assertEquals(this.foodService.createFood(food, 1L).getId(), null);
+    assertEquals(this.foodService.createFood(food, 1L).getName(), food.getName());
   }
 
   @Test
@@ -94,6 +100,6 @@ public class FoodServiceTest {
 
     when(this.foodRepository.save(Mockito.any())).thenReturn(food);
 
-    assertEquals(this.foodService.updateFood(food, "test").getName(), food.getName());
+    assertEquals(this.foodService.updateFood(food, 1L).getName(), food.getName());
   }
 }

@@ -1,7 +1,7 @@
 package fr.foodlimit.api.food;
 
 import fr.foodlimit.api.shared.models.Food;
-import fr.foodlimit.api.shared.models.User;
+import fr.foodlimit.api.shared.models.Place;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class FoodService {
   FoodRepository foodRepository;
 
   /**
-   * Récupère un aliment de l'utilisateur
+   * Récupère tous aliments
    * @return
    */
   public Iterable<Food> getFoods() {
@@ -25,15 +25,15 @@ public class FoodService {
   }
 
   /**
-   * Récupère un aliment de l'utilisateur
-   * @param username
+   * Récupère les aliments de l'utilisateur
+   * @param placeId
    * @return
    */
-  public List<Food> getFoods(String username) {
-    User user = new User();
-    user.setUsername(username);
+  public List<Food> getFoods(Long placeId) {
+    Place place = new Place();
+    place.setId(placeId);
 
-    return foodRepository.findByUser(user);
+    return foodRepository.findByPlace(place);
   }
 
   /**
@@ -56,28 +56,28 @@ public class FoodService {
   /**
    * Créé un aliment pour l'utilisateur
    * @param food
-   * @param username
+   * @param placeId
    * @return
    */
-  public Food createFood(Food food, String username) {
+  public Food createFood(Food food, Long placeId) {
     food.setId(null);
-    User user = new User();
-    user.setUsername(username);
-    food.setUser(user);
+    Place place = new Place();
+    place.setId(placeId);
+    food.setPlace(place);
     return foodRepository.save(food);
   }
 
   /**
    * Modifie un aliment de l'utilisateur
    * @param food
-   * @param username
+   * @param placeId
    * @return
    */
-  public Food updateFood(Food food, String username) {
+  public Food updateFood(Food food, Long placeId) {
     food.setId(food.getId());
-    User user = new User();
-    user.setUsername(username);
-    food.setUser(user);
+    Place place = new Place();
+    place.setId(placeId);
+    food.setPlace(place);
     return foodRepository.save(food);
   }
 }

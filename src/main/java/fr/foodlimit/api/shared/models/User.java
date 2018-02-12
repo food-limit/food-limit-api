@@ -27,7 +27,8 @@ public class User {
 
   @JsonIgnore
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  private List<Food> foods;
+  private List<Place> places;
+
 
   /**
    * Encode le mot de passe de l'utilisateur

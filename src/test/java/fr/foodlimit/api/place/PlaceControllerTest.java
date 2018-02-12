@@ -1,11 +1,11 @@
 
-package fr.foodlimit.api.food;
+package fr.foodlimit.api.place;
 
 import fr.foodlimit.api.Application;
+import fr.foodlimit.api.food.FoodService;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Food;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import fr.foodlimit.api.shared.models.Place;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,10 +36,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class FoodControllerTest {
+public class PlaceControllerTest {
 
   @MockBean
-  FoodService foodService;
+  PlaceService placeService;
 
   @MockBean
   TokenProvider tokenProvider;
@@ -47,44 +47,35 @@ public class FoodControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  private List<Food> foods;
+  private List<Place> places;
 
   @Before
   public void init() {
-    this.foods = new ArrayList<>();
-    Food banane = new Food();
-    banane.setName("banane");
-    this.foods.add(banane);
-    Food abricot = new Food();
-    banane.setName("abricot");
-    this.foods.add(abricot);
+    this.places = new ArrayList<>();
+    Place maison = new Place();
+    maison.setName("maison");
+    this.places.add(maison);
+    Place appart = new Place();
+    appart.setName("appart");
+    this.places.add(appart);
   }
 
   @Test
-  public void shouldGetFoods() throws Exception {
+  public void shouldGetPlaces() throws Exception {
     Mockito.when(
-      foodService.getFoods(Mockito.anyLong())).thenReturn(this.foods);
+      placeService.getPlaces(Mockito.any())).thenReturn(this.places);
 
     Mockito.when(
       tokenProvider.getUsername(Mockito.anyString())).thenReturn(Mockito.anyString());
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-      "/places/1/foods")
+      "/places")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-    String expected = "[{\"id\":null," +
-      "\"name\":\"abricot\"," +
-      "\"dlc\":null," +
-      "\"quantity\":null," +
-      "\"picture\":null}," +
-      "{\"id\":null," +
-      "\"name\":null," +
-      "\"dlc\":null," +
-      "\"quantity\":null," +
-      "\"picture\":null}]";
+    String expected = "[{\"id\":null,\"name\":\"maison\"},{\"id\":null,\"name\":\"appart\"}]";
 
     JSONAssert.assertEquals(
       expected,
@@ -92,82 +83,82 @@ public class FoodControllerTest {
       false);
   }
 
-  @Test
-  public void shouldGetFood() throws Exception {
+ @Test
+  public void shouldGetPlace() throws Exception {
     Mockito.when(
-      foodService.getFood(1L)).thenReturn(foods.get(0));
+      placeService.getPlace(1L)).thenReturn(places.get(0));
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-      "/places/1/foods/1")
+      "/places/1")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-    String expected = "{\"id\" :null,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}";
+    String expected = "{\"id\":null,\"name\":\"maison\"}";
 
     JSONAssert.assertEquals(expected, result.getResponse()
       .getContentAsString(), false);
   }
 
   @Test
-  public void shouldCreateFood() throws Exception {
-    Food food = foods.get(0);
-    food.setId(2L);
+  public void shouldCreatePlace() throws Exception {
+    Place place = places.get(0);
+    place.setId(2L);
 
-    Mockito.when(
-      foodService.createFood(any(), any())).thenReturn(food);
+    Mockito.when(placeService.createPlace(any(), any())).thenReturn(place);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
-      "/places/1/foods")
+      "/places")
       .contentType(APPLICATION_JSON_UTF8)
-      .content("{\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}")
+      .content("{\"name\":\"maison\"}")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-    String expected = "{\"id\" :2,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}";
+    String expected = "{\"id\" :2,\"name\":\"maison\"}";
 
     JSONAssert.assertEquals(expected, result.getResponse()
       .getContentAsString(), false);
   }
 
   @Test
-  public void shouldUpdateFood() throws Exception {
-    Food food = foods.get(0);
-    food.setId(1L);
+  public void shouldUpdatePlace() throws Exception {
+    Place place = places.get(0);
+    place.setId(1L);
+    place.setName("maison update");
 
     Mockito.when(
-      foodService.updateFood(any(), any())).thenReturn(food);
+      placeService.updatePlace(any(), any())).thenReturn(place);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
-      "/places/1/foods/1")
+      "/places/1")
       .contentType(APPLICATION_JSON_UTF8)
-      .content("{\"id\" :1,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}")
+      .content("{\"id\" :1,\"name\":\""+ place.getName() +"\"}")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
     MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-    String expected = "{\"id\" :1,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}";
+    String expected = "{\"id\" :1,\"name\":\"maison update\"}";
 
     JSONAssert.assertEquals(expected, result.getResponse()
       .getContentAsString(), false);
   }
 
   @Test
-  public void shouldDeleteFood() throws Exception {
+  public void shouldDeletePlace() throws Exception {
     ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(
-      "/places/1/foods/1")
+      "/places/1")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
     mockMvc.perform(requestBuilder).andReturn();
 
-    Mockito.verify(foodService).deleteFood(longCaptor.capture());
+    Mockito.verify(placeService).deletePlace(longCaptor.capture());
 
     assertEquals(new Long(1L), longCaptor.getValue());
   }

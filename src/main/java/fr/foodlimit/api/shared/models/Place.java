@@ -7,14 +7,15 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
- * Classe métier représentant une denrée alimentaire
+ * Classe métier représentant un foyer
  */
 @Entity
 @Data
 @SuppressWarnings("squid:S1068")
-public class Food {
+public class Place {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +23,13 @@ public class Food {
 
   private String name;
 
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  private LocalDate dlc;
-
-  private Integer quantity;
-
-  private String picture;
-
   @JsonIgnore
   @ManyToOne
-  @JoinColumn(name="PLACE_ID")
-  private Place place;
+  @JoinColumn(name="USER_ID")
+  private User user;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+  private List<Food> foods;
 }
 
