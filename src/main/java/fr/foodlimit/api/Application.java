@@ -19,7 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableScheduling
 public class Application {
 
-  public final static Logger logger = LoggerFactory.getLogger(Application.class);
+  public static final Logger logger = LoggerFactory.getLogger(Application.class);
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);

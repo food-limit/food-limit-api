@@ -17,6 +17,6 @@ public class PingService {
    * @return
    */
   public String getPing() {
-    return pingRepository.findById(new Long(1)).get().getTitle();
+    return pingRepository.findById(1L).get().getTitle();
   }
 }

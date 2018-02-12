@@ -18,5 +18,6 @@ public class Ping {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @SuppressWarnings("squid:S00112")
   private String title;
 }

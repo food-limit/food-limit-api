@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 public class JWTFilter extends GenericFilterBean {
 
-  public final static String AUTHORIZATION_HEADER = "Authorization";
+  public static final String AUTHORIZATION_HEADER = "Authorization";
 
   private final TokenProvider tokenProvider;
 

@@ -43,6 +43,7 @@ public class AuthController {
    */
   @GetMapping("/authenticate")
   public void authenticate() {
+    // Empty, because it's just to check if the user is authenticated
   }
 
   /**

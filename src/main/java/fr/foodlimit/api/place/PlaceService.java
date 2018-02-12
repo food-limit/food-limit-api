@@ -1,7 +1,5 @@
 package fr.foodlimit.api.place;
 
-import fr.foodlimit.api.food.FoodRepository;
-import fr.foodlimit.api.shared.models.Food;
 import fr.foodlimit.api.shared.models.Place;
 import fr.foodlimit.api.shared.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
