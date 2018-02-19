@@ -74,7 +74,6 @@ public class PlaceService {
    * @return
    */
   public Place updatePlace(Place place, String username) {
-    place.setId(place.getId());
     User user = new User();
     user.setUsername(username);
     place.setUser(user);
