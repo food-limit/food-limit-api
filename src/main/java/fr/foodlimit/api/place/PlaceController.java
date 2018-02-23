@@ -52,30 +52,10 @@ public class PlaceController {
   @GetMapping("/{id}")
   public ResponseEntity<Place> getPlace(HttpServletRequest request, @PathVariable("id") Long id) {
     Place place = placeService.getPlace(id);
-    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !place.getUser().getUsername().equals(username)) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
+    if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
     return ResponseEntity.ok(placeService.getPlace(id));
-  }
-
-  /**
-   * Supprime un foyer de l'utilisateur
-   * @param id
-   */
-  @DeleteMapping("/{id}")
-  public ResponseEntity deletePlace(HttpServletRequest request, @PathVariable("id") Long id) {
-    Place place = placeService.getPlace(id);
-    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !place.getUser().getUsername().equals(username)) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    placeService.deletePlace(id);
-    return ResponseEntity.noContent().build();
   }
 
   /**
@@ -101,12 +81,29 @@ public class PlaceController {
     Place dbPlace = placeService.getPlace(id);
     String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !dbPlace.getUser().getUsername().equals(username)) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
+    if (!checkPlace(request, dbPlace)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
     place.setId(id);
     return ResponseEntity.ok(placeService.updatePlace(place, username));
+  }
+
+  /**
+   * Supprime un foyer de l'utilisateur
+   * @param id
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity deletePlace(HttpServletRequest request, @PathVariable("id") Long id) {
+    Place place = placeService.getPlace(id);
+
+    if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+    placeService.deletePlace(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  private boolean checkPlace(HttpServletRequest request, Place place) {
+    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+    return !this.environment.getActiveProfiles()[0].equals("test") && place.getUser().getUsername().equals(username);
   }
 }
 
