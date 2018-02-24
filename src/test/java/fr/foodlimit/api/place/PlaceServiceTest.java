@@ -1,7 +1,6 @@
 package fr.foodlimit.api.place;
 
 import fr.foodlimit.api.Application;
-import fr.foodlimit.api.shared.models.Food;
 import fr.foodlimit.api.shared.models.Place;
 import fr.foodlimit.api.shared.models.User;
 import org.junit.Before;

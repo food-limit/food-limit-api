@@ -26,10 +26,4 @@ public interface PlaceRepository extends CrudRepository<Place, Long> {
    * @return
    */
   Place findById(int id);
-
-  /**
-   * Supprime un foyer par l'id
-   * @param id
-   */
-  void deleteById(int id);
 }
