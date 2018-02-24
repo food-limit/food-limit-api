@@ -26,10 +26,4 @@ public interface FoodRepository extends CrudRepository<Food, Long> {
    * @return
    */
   Food findById(int id);
-
-  /**
-   * Supprime une denrée alimentaire par l'id
-   * @param id
-   */
-  void deleteById(int id);
 }

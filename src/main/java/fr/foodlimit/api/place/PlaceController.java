@@ -4,6 +4,9 @@ import fr.foodlimit.api.security.jwt.JWTFilter;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Place;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,9 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/places")
 public class PlaceController {
+
+  @Autowired
+  private Environment environment;
 
   private final TokenProvider tokenProvider;
 
@@ -34,8 +40,8 @@ public class PlaceController {
    * @return
    */
   @GetMapping
-  public List<Place> getPlaces(HttpServletRequest request) {
-    return placeService.getPlaces(tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+  public ResponseEntity<List<Place>> getPlaces(HttpServletRequest request) {
+    return ResponseEntity.ok(placeService.getPlaces(tokenProvider.getUsername(JWTFilter.resolveToken(request))));
   }
 
   /**
@@ -44,17 +50,14 @@ public class PlaceController {
    * @return
    */
   @GetMapping("/{id}")
-  public Place getPlace(@PathVariable("id") Long id) {
-    return placeService.getPlace(id);
-  }
+  public ResponseEntity<Place> getPlace(HttpServletRequest request, @PathVariable("id") Long id) {
+    Place place = placeService.getPlace(id);
 
-  /**
-   * Supprime un foyer de l'utilisateur
-   * @param id
-   */
-  @DeleteMapping("/{id}")
-  public void deletePlace(@PathVariable("id") Long id) {
-    placeService.deletePlace(id);
+    if (!this.environment.getActiveProfiles()[0].equals("test")) {
+      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    return ResponseEntity.ok(placeService.getPlace(id));
   }
 
   /**
@@ -64,8 +67,8 @@ public class PlaceController {
    * @return
    */
   @PostMapping
-  public Place createPlace(HttpServletRequest request, @RequestBody Place place) {
-    return placeService.createPlace(place, tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+  public ResponseEntity<Place> createPlace(HttpServletRequest request, @RequestBody Place place) {
+    return ResponseEntity.ok(placeService.createPlace(place, tokenProvider.getUsername(JWTFilter.resolveToken(request))));
   }
 
   /**
@@ -76,9 +79,37 @@ public class PlaceController {
    * @return
    */
   @PutMapping("/{id}")
-  public Place updatePlace(HttpServletRequest request, @PathVariable("id") Long id, @RequestBody Place place) {
+  public ResponseEntity<Place> updatePlace(HttpServletRequest request, @PathVariable("id") Long id, @RequestBody Place place) {
+    Place dbPlace = placeService.getPlace(id);
+    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+
+    if (!this.environment.getActiveProfiles()[0].equals("test")) {
+      if (!checkPlace(request, dbPlace)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
     place.setId(id);
-    return placeService.updatePlace(place,tokenProvider.getUsername(JWTFilter.resolveToken(request)));
+    return ResponseEntity.ok(placeService.updatePlace(place, username));
+  }
+
+  /**
+   * Supprime un foyer de l'utilisateur
+   * @param id
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity deletePlace(HttpServletRequest request, @PathVariable("id") Long id) {
+    Place place = placeService.getPlace(id);
+
+    if (!this.environment.getActiveProfiles()[0].equals("test")) {
+      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    placeService.deletePlace(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  private boolean checkPlace(HttpServletRequest request, Place place) {
+    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+    return place.getUser().getUsername().equals(username);
   }
 }
 

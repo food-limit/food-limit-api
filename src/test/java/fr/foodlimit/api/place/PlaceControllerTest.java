@@ -2,9 +2,7 @@
 package fr.foodlimit.api.place;
 
 import fr.foodlimit.api.Application;
-import fr.foodlimit.api.food.FoodService;
 import fr.foodlimit.api.security.jwt.TokenProvider;
-import fr.foodlimit.api.shared.models.Food;
 import fr.foodlimit.api.shared.models.Place;
 import org.junit.Before;
 import org.junit.Test;
