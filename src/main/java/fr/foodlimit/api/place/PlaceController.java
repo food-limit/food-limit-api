@@ -53,8 +53,8 @@ public class PlaceController {
   public ResponseEntity<Place> getPlace(HttpServletRequest request, @PathVariable("id") Long id) {
     Place place = placeService.getPlace(id);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     return ResponseEntity.ok(placeService.getPlace(id));
@@ -83,8 +83,8 @@ public class PlaceController {
     Place dbPlace = placeService.getPlace(id);
     String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, dbPlace)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, dbPlace)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     place.setId(id);
@@ -99,8 +99,8 @@ public class PlaceController {
   public ResponseEntity deletePlace(HttpServletRequest request, @PathVariable("id") Long id) {
     Place place = placeService.getPlace(id);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!checkPlace(request, place) && !this.environment.getActiveProfiles()[0].equals("test")) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     placeService.deletePlace(id);

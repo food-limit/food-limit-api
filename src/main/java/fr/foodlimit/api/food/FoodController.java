@@ -49,8 +49,8 @@ public class FoodController {
   public ResponseEntity<List<Food>> getFoods(HttpServletRequest request, @PathVariable("placeId") Long placeId) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     return ResponseEntity.ok(foodService.getFoods(placeId));
@@ -83,8 +83,8 @@ public class FoodController {
   public ResponseEntity<Food> createFood(HttpServletRequest request, @PathVariable("placeId") Long placeId, @RequestBody Food food) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     return ResponseEntity.ok(foodService.createFood(food, placeId));
@@ -104,9 +104,12 @@ public class FoodController {
                                          @RequestBody Food food) {
     Place dbPlace = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, dbPlace)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-      if (!checkFood(id, dbPlace)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, dbPlace)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkFood(id, dbPlace)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     food.setId(id);
@@ -121,8 +124,8 @@ public class FoodController {
   public ResponseEntity deleteFood(HttpServletRequest request, @PathVariable("placeId") Long placeId, @PathVariable Long id) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     foodService.deleteFood(id);
@@ -142,7 +145,7 @@ public class FoodController {
       .filter(food -> food.getId().equals(id))
       .collect(Collectors.toList());
 
-    return foodsFiltered.size() != 0;
+    return !foodsFiltered.isEmpty();
   }
 }
 
