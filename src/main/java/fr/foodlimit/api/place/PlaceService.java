@@ -17,14 +17,6 @@ public class PlaceService {
   PlaceRepository placeRepository;
 
   /**
-   * Récupère tous les foyers
-   * @return
-   */
-  public Iterable<Place> getPlaces() {
-    return placeRepository.findAll();
-  }
-
-  /**
    * Récupère les foyers de l'utilisateur
    * @param username
    * @return
