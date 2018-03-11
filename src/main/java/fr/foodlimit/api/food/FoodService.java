@@ -17,11 +17,19 @@ public class FoodService {
   FoodRepository foodRepository;
 
   /**
+   * Récupère tous aliments
+   * @return
+   */
+  public Iterable<Food> getFoods() {
+    return foodRepository.findAll();
+  }
+
+  /**
    * Récupère les aliments de l'utilisateur
    * @param placeId
    * @return
    */
-  public List<Food> getFoods(Long placeId) {
+  public List<Food> getFoodsByPlace(Long placeId) {
     Place place = new Place();
     place.setId(placeId);
 

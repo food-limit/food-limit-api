@@ -61,7 +61,7 @@ public class FoodControllerTest {
   @Test
   public void shouldGetFoods() throws Exception {
     Mockito.when(
-      foodService.getFoods(Mockito.anyLong())).thenReturn(this.foods);
+      foodService.getFoodsByPlace(Mockito.anyLong())).thenReturn(this.foods);
 
     Mockito.when(
       tokenProvider.getUsername(Mockito.anyString())).thenReturn(Mockito.anyString());
