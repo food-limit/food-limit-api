@@ -53,7 +53,7 @@ public class FoodController {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    return ResponseEntity.ok(foodService.getFoods(placeId));
+    return ResponseEntity.ok(foodService.getFoodsByPlace(placeId));
   }
 
   /**

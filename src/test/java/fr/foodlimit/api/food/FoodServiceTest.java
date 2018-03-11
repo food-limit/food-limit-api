@@ -61,7 +61,7 @@ public class FoodServiceTest {
   public void shouldGetFoods() {
     when(this.foodRepository.findByPlace(Mockito.any())).thenReturn(user.getPlaces().get(0).getFoods());
 
-    assertEquals(this.foodService.getFoods(1L), user.getPlaces().get(0).getFoods());
+    assertEquals(this.foodService.getFoodsByPlace(1L), user.getPlaces().get(0).getFoods());
   }
 
   @Test
