@@ -36,10 +36,6 @@ public class ScheduledTasks {
 
   @Scheduled(cron="0 0 19 * * *")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
-    System.out.println(url);
-    System.out.println(apiKey);
-    System.out.println(appId);
-
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
       Food food = i.next();
