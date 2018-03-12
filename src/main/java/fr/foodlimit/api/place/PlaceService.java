@@ -1,10 +1,13 @@
 package fr.foodlimit.api.place;
 
+import fr.foodlimit.api.security.jwt.JWTFilter;
+import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Place;
 import fr.foodlimit.api.shared.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -70,5 +73,10 @@ public class PlaceService {
     user.setUsername(username);
     place.setUser(user);
     return placeRepository.save(place);
+  }
+
+  public boolean checkPlace(TokenProvider tokenProvider, HttpServletRequest request, Place place) {
+    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+    return place.getUser().getUsername().equals(username);
   }
 }

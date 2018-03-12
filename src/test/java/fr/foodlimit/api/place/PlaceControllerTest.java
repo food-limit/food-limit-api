@@ -36,6 +36,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 @ActiveProfiles("test")
 public class PlaceControllerTest {
 
+  @Autowired
+  PlaceController placeController;
+
   @MockBean
   PlaceService placeService;
 
@@ -86,6 +89,9 @@ public class PlaceControllerTest {
     Mockito.when(
       placeService.getPlace(1L)).thenReturn(places.get(0));
 
+   Mockito.when(
+     placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
       "/places/1")
       .header(AUTHORIZATION_HEADER, "Bearer test")
@@ -130,6 +136,9 @@ public class PlaceControllerTest {
     Mockito.when(
       placeService.updatePlace(any(), any())).thenReturn(place);
 
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
     RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
       "/places/1")
       .contentType(APPLICATION_JSON_UTF8)
@@ -148,6 +157,9 @@ public class PlaceControllerTest {
   @Test
   public void shouldDeletePlace() throws Exception {
     ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
+
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(
       "/places/1")

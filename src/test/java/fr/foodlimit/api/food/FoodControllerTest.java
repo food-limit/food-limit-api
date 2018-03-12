@@ -64,7 +64,7 @@ public class FoodControllerTest {
       foodService.getFoodsByPlace(Mockito.anyLong())).thenReturn(this.foods);
 
     Mockito.when(
-      tokenProvider.getUsername(Mockito.anyString())).thenReturn(Mockito.anyString());
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
       "/places/1/foods")
@@ -95,6 +95,12 @@ public class FoodControllerTest {
     Mockito.when(
       foodService.getFood(1L)).thenReturn(foods.get(0));
 
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(true);
+
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
       "/places/1/foods/1")
       .header(AUTHORIZATION_HEADER, "Bearer test")
@@ -115,6 +121,9 @@ public class FoodControllerTest {
 
     Mockito.when(
       foodService.createFood(any(), any())).thenReturn(food);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
       "/places/1/foods")
@@ -139,6 +148,12 @@ public class FoodControllerTest {
     Mockito.when(
       foodService.updateFood(any(), any())).thenReturn(food);
 
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(true);
+
     RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
       "/places/1/foods/1")
       .contentType(APPLICATION_JSON_UTF8)
@@ -157,6 +172,9 @@ public class FoodControllerTest {
   @Test
   public void shouldDeleteFood() throws Exception {
     ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(
       "/places/1/foods/1")

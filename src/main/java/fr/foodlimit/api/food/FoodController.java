@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Ressource FoodController
- *
+ * <p>
  * Cette ressource gère l'ensemble des actions concernant les denrées alimentaires
  */
 @RestController
@@ -42,6 +42,7 @@ public class FoodController {
 
   /**
    * Récupère la liste des aliments de l'utilisateur
+   *
    * @param placeId
    * @return
    */
@@ -49,7 +50,7 @@ public class FoodController {
   public ResponseEntity<List<Food>> getFoods(HttpServletRequest request, @PathVariable("placeId") Long placeId) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+    if (!foodService.checkPlace(tokenProvider, request, place)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
@@ -58,6 +59,7 @@ public class FoodController {
 
   /**
    * Récupère un aliment de l'utilisateur
+   *
    * @param id
    * @return
    */
@@ -65,16 +67,16 @@ public class FoodController {
   public ResponseEntity<Food> getFood(HttpServletRequest request, @PathVariable("placeId") Long placeId, @PathVariable("id") Long id) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test")) {
-      if (!checkPlace(request, place)) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-      if (!checkFood(id, place)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+    if (!foodService.checkPlace(tokenProvider, request, place))
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    if (!foodService.checkFood(id, place)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     return ResponseEntity.ok(foodService.getFood(id));
   }
 
   /**
    * Créé un aliment pour l'utilisateur
+   *
    * @param placeId
    * @param food
    * @return
@@ -83,7 +85,7 @@ public class FoodController {
   public ResponseEntity<Food> createFood(HttpServletRequest request, @PathVariable("placeId") Long placeId, @RequestBody Food food) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+    if (!foodService.checkPlace(tokenProvider, request, place)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
@@ -92,6 +94,7 @@ public class FoodController {
 
   /**
    * Modifie un aliment de l'utilisateur
+   *
    * @param placeId
    * @param id
    * @param food
@@ -104,48 +107,34 @@ public class FoodController {
                                          @RequestBody Food food) {
     Place dbPlace = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, dbPlace)) {
+    if (!foodService.checkPlace(tokenProvider, request, dbPlace)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkFood(id, dbPlace)) {
+    if (!foodService.checkFood(id, dbPlace)) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     food.setId(id);
-    return ResponseEntity.ok(foodService.updateFood(food,placeId));
+    return ResponseEntity.ok(foodService.updateFood(food, placeId));
   }
 
   /**
    * Supprime un aliment de l'utilisateur
+   *
    * @param id
    */
   @DeleteMapping("/{id}")
   public ResponseEntity deleteFood(HttpServletRequest request, @PathVariable("placeId") Long placeId, @PathVariable Long id) {
     Place place = placeService.getPlace(placeId);
 
-    if (!this.environment.getActiveProfiles()[0].equals("test") && !checkPlace(request, place)) {
+    if (!foodService.checkPlace(tokenProvider, request, place)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     foodService.deleteFood(id);
 
     return ResponseEntity.noContent().build();
-  }
-
-  private boolean checkPlace(HttpServletRequest request, Place place) {
-    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-
-    return place.getUser().getUsername().equals(username);
-  }
-
-  private boolean checkFood(Long id, Place place) {
-    List<Food> foodsFiltered = place.getFoods()
-      .stream()
-      .filter(food -> food.getId().equals(id))
-      .collect(Collectors.toList());
-
-    return !foodsFiltered.isEmpty();
   }
 }
 

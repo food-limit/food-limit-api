@@ -1,11 +1,15 @@
 package fr.foodlimit.api.food;
 
+import fr.foodlimit.api.security.jwt.JWTFilter;
+import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Food;
 import fr.foodlimit.api.shared.models.Place;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe de service concernant les denrées alimentaires
@@ -79,5 +83,20 @@ public class FoodService {
     place.setId(placeId);
     food.setPlace(place);
     return foodRepository.save(food);
+  }
+
+  public boolean checkPlace(TokenProvider tokenProvider, HttpServletRequest request, Place place) {
+    String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+
+    return place.getUser().getUsername().equals(username);
+  }
+
+  public boolean checkFood(Long id, Place place) {
+    List<Food> foodsFiltered = place.getFoods()
+      .stream()
+      .filter(food -> food.getId().equals(id))
+      .collect(Collectors.toList());
+
+    return !foodsFiltered.isEmpty();
   }
 }
