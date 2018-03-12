@@ -29,6 +29,7 @@ import static fr.foodlimit.api.security.jwt.JWTFilter.AUTHORIZATION_HEADER;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -91,6 +92,22 @@ public class FoodControllerTest {
   }
 
   @Test
+  public void shouldNotGetFoodsForbidden() throws Exception {
+    Mockito.when(
+      foodService.getFoodsByPlace(Mockito.anyLong())).thenReturn(this.foods);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+      "/places/1/foods")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
+  }
+
+  @Test
   public void shouldGetFood() throws Exception {
     Mockito.when(
       foodService.getFood(1L)).thenReturn(foods.get(0));
@@ -112,6 +129,44 @@ public class FoodControllerTest {
 
     JSONAssert.assertEquals(expected, result.getResponse()
       .getContentAsString(), false);
+  }
+
+  @Test
+  public void shouldNotGetFoodForbidden() throws Exception {
+    Mockito.when(
+      foodService.getFood(1L)).thenReturn(foods.get(0));
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(true);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+      "/places/1/foods/1")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
+  }
+
+  @Test
+  public void shouldNotGetFoodBadRequest() throws Exception {
+    Mockito.when(
+      foodService.getFood(1L)).thenReturn(foods.get(0));
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+      "/places/1/foods/1")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -138,6 +193,27 @@ public class FoodControllerTest {
 
     JSONAssert.assertEquals(expected, result.getResponse()
       .getContentAsString(), false);
+  }
+
+  @Test
+  public void shouldNotCreateFoodForbidden() throws Exception {
+    Food food = foods.get(0);
+    food.setId(2L);
+
+    Mockito.when(
+      foodService.createFood(any(), any())).thenReturn(food);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.post(
+      "/places/1/foods")
+      .contentType(APPLICATION_JSON_UTF8)
+      .content("{\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
   }
 
   @Test
@@ -170,6 +246,54 @@ public class FoodControllerTest {
   }
 
   @Test
+  public void shouldNotUpdateFoodForbidden() throws Exception {
+    Food food = foods.get(0);
+    food.setId(1L);
+
+    Mockito.when(
+      foodService.updateFood(any(), any())).thenReturn(food);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(true);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
+      "/places/1/foods/1")
+      .contentType(APPLICATION_JSON_UTF8)
+      .content("{\"id\" :1,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
+  }
+
+  @Test
+  public void shouldNotUpdateFoodBadRequest() throws Exception {
+    Food food = foods.get(0);
+    food.setId(1L);
+
+    Mockito.when(
+      foodService.updateFood(any(), any())).thenReturn(food);
+
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+
+    Mockito.when(
+      foodService.checkFood(Mockito.anyLong(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
+      "/places/1/foods/1")
+      .contentType(APPLICATION_JSON_UTF8)
+      .content("{\"id\" :1,\"name\":\"abricot\",\"dlc\":null,\"quantity\":null,\"picture\":null}")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void shouldDeleteFood() throws Exception {
     ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -186,5 +310,18 @@ public class FoodControllerTest {
     Mockito.verify(foodService).deleteFood(longCaptor.capture());
 
     assertEquals(new Long(1L), longCaptor.getValue());
+  }
+
+  @Test
+  public void shouldNotDeleteFoodForbidden() throws Exception {
+    Mockito.when(
+      foodService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(
+      "/places/1/foods/1")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
   }
 }

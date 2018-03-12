@@ -29,6 +29,7 @@ import static fr.foodlimit.api.security.jwt.JWTFilter.AUTHORIZATION_HEADER;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -106,6 +107,22 @@ public class PlaceControllerTest {
   }
 
   @Test
+  public void shouldNotGetPlaceForbidden() throws Exception {
+    Mockito.when(
+      placeService.getPlace(1L)).thenReturn(places.get(0));
+
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+      "/places/1")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
+  }
+
+  @Test
   public void shouldCreatePlace() throws Exception {
     Place place = places.get(0);
     place.setId(2L);
@@ -155,6 +172,28 @@ public class PlaceControllerTest {
   }
 
   @Test
+  public void shouldNotUpdatePlaceForbidden() throws Exception {
+    Place place = places.get(0);
+    place.setId(1L);
+    place.setName("maison update");
+
+    Mockito.when(
+      placeService.updatePlace(any(), any())).thenReturn(place);
+
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
+      "/places/1")
+      .contentType(APPLICATION_JSON_UTF8)
+      .content("{\"id\" :1,\"name\":\""+ place.getName() +"\"}")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
+  }
+
+  @Test
   public void shouldDeletePlace() throws Exception {
     ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -171,5 +210,20 @@ public class PlaceControllerTest {
     Mockito.verify(placeService).deletePlace(longCaptor.capture());
 
     assertEquals(new Long(1L), longCaptor.getValue());
+  }
+
+  @Test
+  public void shouldNotDeletePlaceForbidden() throws Exception {
+    ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
+
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
+
+    RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(
+      "/places/1")
+      .header(AUTHORIZATION_HEADER, "Bearer test")
+      .accept(MediaType.APPLICATION_JSON);
+
+    mockMvc.perform(requestBuilder).andExpect(status().isForbidden());
   }
 }
