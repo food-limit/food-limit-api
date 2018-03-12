@@ -23,7 +23,7 @@ public class Place {
 
   @JsonIgnore
   @ManyToOne
-  @JoinColumn(name="USER_ID")
+  @JoinColumn(name = "USER_ID")
   private User user;
 
   @JsonIgnore

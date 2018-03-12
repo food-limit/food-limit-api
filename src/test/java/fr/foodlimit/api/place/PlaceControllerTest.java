@@ -85,13 +85,13 @@ public class PlaceControllerTest {
       false);
   }
 
- @Test
+  @Test
   public void shouldGetPlace() throws Exception {
     Mockito.when(
       placeService.getPlace(1L)).thenReturn(places.get(0));
 
-   Mockito.when(
-     placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+    Mockito.when(
+      placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
 
     RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
       "/places/1")
@@ -159,7 +159,7 @@ public class PlaceControllerTest {
     RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
       "/places/1")
       .contentType(APPLICATION_JSON_UTF8)
-      .content("{\"id\" :1,\"name\":\""+ place.getName() +"\"}")
+      .content("{\"id\" :1,\"name\":\"" + place.getName() + "\"}")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
@@ -186,7 +186,7 @@ public class PlaceControllerTest {
     RequestBuilder requestBuilder = MockMvcRequestBuilders.put(
       "/places/1")
       .contentType(APPLICATION_JSON_UTF8)
-      .content("{\"id\" :1,\"name\":\""+ place.getName() +"\"}")
+      .content("{\"id\" :1,\"name\":\"" + place.getName() + "\"}")
       .header(AUTHORIZATION_HEADER, "Bearer test")
       .accept(MediaType.APPLICATION_JSON);
 
@@ -214,8 +214,6 @@ public class PlaceControllerTest {
 
   @Test
   public void shouldNotDeletePlaceForbidden() throws Exception {
-    ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
-
     Mockito.when(
       placeService.checkPlace(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(false);
 

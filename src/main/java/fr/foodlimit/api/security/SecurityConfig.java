@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 /**
  * Classe de configuration pour la sécurité valable uniquement en dev et production
  */
-@Profile({ "dev", "prod" })
+@Profile({"dev", "prod"})
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

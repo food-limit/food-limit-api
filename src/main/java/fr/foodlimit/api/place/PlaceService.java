@@ -21,6 +21,7 @@ public class PlaceService {
 
   /**
    * Récupère les foyers de l'utilisateur
+   *
    * @param username
    * @return
    */
@@ -33,6 +34,7 @@ public class PlaceService {
 
   /**
    * Récupère un foyer de l'utilisateur
+   *
    * @param id
    * @return
    */
@@ -42,6 +44,7 @@ public class PlaceService {
 
   /**
    * Supprime un foyer de l'utilisateur
+   *
    * @param id
    */
   public void deletePlace(Long id) {
@@ -50,6 +53,7 @@ public class PlaceService {
 
   /**
    * Créé un foyer pour l'utilisateur
+   *
    * @param place
    * @param username
    * @return
@@ -64,6 +68,7 @@ public class PlaceService {
 
   /**
    * Modifie un foyer de l'utilisateur
+   *
    * @param place
    * @param username
    * @return
@@ -75,6 +80,14 @@ public class PlaceService {
     return placeRepository.save(place);
   }
 
+  /**
+   * Vérifie si le foyer appartient bien à l'utilisateur donné
+   *
+   * @param tokenProvider
+   * @param request
+   * @param place
+   * @return
+   */
   public boolean checkPlace(TokenProvider tokenProvider, HttpServletRequest request, Place place) {
     String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
     return place.getUser().getUsername().equals(username);

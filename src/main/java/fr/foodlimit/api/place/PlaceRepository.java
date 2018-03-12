@@ -15,6 +15,7 @@ public interface PlaceRepository extends CrudRepository<Place, Long> {
 
   /**
    * Récupère une liste des foyers en fonction de l'utilisateur
+   *
    * @param user
    * @return
    */
@@ -22,6 +23,7 @@ public interface PlaceRepository extends CrudRepository<Place, Long> {
 
   /**
    * Récupère un foyer par l'id
+   *
    * @param id
    * @return
    */

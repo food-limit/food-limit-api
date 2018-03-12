@@ -22,6 +22,7 @@ public class FoodService {
 
   /**
    * Récupère tous aliments
+   *
    * @return
    */
   public Iterable<Food> getFoods() {
@@ -30,6 +31,7 @@ public class FoodService {
 
   /**
    * Récupère les aliments de l'utilisateur
+   *
    * @param placeId
    * @return
    */
@@ -42,6 +44,7 @@ public class FoodService {
 
   /**
    * Récupère un aliment de l'utilisateur
+   *
    * @param id
    * @return
    */
@@ -51,6 +54,7 @@ public class FoodService {
 
   /**
    * Supprime un aliment de l'utilisateur
+   *
    * @param id
    */
   public void deleteFood(Long id) {
@@ -59,6 +63,7 @@ public class FoodService {
 
   /**
    * Créé un aliment pour l'utilisateur
+   *
    * @param food
    * @param placeId
    * @return
@@ -73,6 +78,7 @@ public class FoodService {
 
   /**
    * Modifie un aliment de l'utilisateur
+   *
    * @param food
    * @param placeId
    * @return
@@ -85,12 +91,27 @@ public class FoodService {
     return foodRepository.save(food);
   }
 
+  /**
+   * Vérifie si le foyer appartient bien à l'utilisateur donné
+   *
+   * @param tokenProvider
+   * @param request
+   * @param place
+   * @return
+   */
   public boolean checkPlace(TokenProvider tokenProvider, HttpServletRequest request, Place place) {
     String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
 
     return place.getUser().getUsername().equals(username);
   }
 
+  /**
+   * Vérifie si la denrée alimentaire est bien dans le foyer donné
+   *
+   * @param id
+   * @param place
+   * @return
+   */
   public boolean checkFood(Long id, Place place) {
     List<Food> foodsFiltered = place.getFoods()
       .stream()

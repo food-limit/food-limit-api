@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 /**
  * Ressource AuthController
- *
+ * <p>
  * Cette ressource sert à l'authentification sur Food Limit
  */
 @RestController
@@ -48,6 +48,7 @@ public class AuthController {
 
   /**
    * Permet de logger un utilisateur sur l'application
+   *
    * @param loginUser
    * @param response
    * @return
@@ -70,6 +71,7 @@ public class AuthController {
 
   /**
    * Permet d'inscrire un utilisateur sur l'application
+   *
    * @param signupUser
    * @return
    */

@@ -24,6 +24,7 @@ public class AppUserDetailService implements UserDetailsService {
 
   /**
    * Récupère un utilisateur par son identifiant
+   *
    * @param username
    * @return
    * @throws UsernameNotFoundException

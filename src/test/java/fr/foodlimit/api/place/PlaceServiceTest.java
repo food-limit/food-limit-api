@@ -1,6 +1,8 @@
 package fr.foodlimit.api.place;
 
 import fr.foodlimit.api.Application;
+import fr.foodlimit.api.security.jwt.JWTFilter;
+import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Place;
 import fr.foodlimit.api.shared.models.User;
 import org.junit.Before;
@@ -11,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +34,9 @@ public class PlaceServiceTest {
 
   @MockBean
   PlaceRepository placeRepository;
+
+  @MockBean
+  TokenProvider tokenProvider;
 
   User user;
   List<Place> places;
@@ -96,5 +102,35 @@ public class PlaceServiceTest {
     when(this.placeRepository.save(Mockito.any())).thenReturn(place);
 
     assertEquals(this.placeService.updatePlace(place, "test").getId(), place.getId());
+  }
+
+  @Test
+  public void shouldCheckPlace() {
+    Mockito.when(
+      tokenProvider.getUsername(Mockito.anyString())).thenReturn("admin");
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer 1234");
+    Place place = new Place();
+    User user = new User();
+    user.setUsername("admin");
+    place.setUser(user);
+
+    assertTrue(this.placeService.checkPlace(tokenProvider, request, place));
+  }
+
+  @Test
+  public void shouldNotCheckPlace() {
+    Mockito.when(
+      tokenProvider.getUsername(Mockito.anyString())).thenReturn("toto");
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer 1234");
+    Place place = new Place();
+    User user = new User();
+    user.setUsername("admin");
+    place.setUser(user);
+
+    assertFalse(this.placeService.checkPlace(tokenProvider, request, place));
   }
 }

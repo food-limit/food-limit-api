@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(name="user_profile")
+@Table(name = "user_profile")
 @SuppressWarnings("squid:S1068")
 public class User {
 
@@ -32,6 +32,7 @@ public class User {
 
   /**
    * Encode le mot de passe de l'utilisateur
+   *
    * @param passwordEncoder
    */
   public void encodePassword(PasswordEncoder passwordEncoder) {

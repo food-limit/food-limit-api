@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Ressource FoodController
- *
+ * <p>
  * Cette ressource gère l'ensemble des actions concernant les foyers
  */
 @RestController
@@ -36,6 +36,7 @@ public class PlaceController {
 
   /**
    * Récupère la liste des foyers de l'utilisateur
+   *
    * @param request
    * @return
    */
@@ -46,6 +47,7 @@ public class PlaceController {
 
   /**
    * Récupère un foyer de l'utilisateur
+   *
    * @param id
    * @return
    */
@@ -62,6 +64,7 @@ public class PlaceController {
 
   /**
    * Créé un foyer pour l'utilisateur
+   *
    * @param request
    * @param place
    * @return
@@ -73,6 +76,7 @@ public class PlaceController {
 
   /**
    * Modifie un foyer de l'utilisateur
+   *
    * @param request
    * @param id
    * @param place
@@ -83,7 +87,7 @@ public class PlaceController {
     Place dbPlace = placeService.getPlace(id);
     String username = tokenProvider.getUsername(JWTFilter.resolveToken(request));
 
-    if (!placeService.checkPlace(tokenProvider, request, place)) {
+    if (!placeService.checkPlace(tokenProvider, request, dbPlace)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
@@ -93,6 +97,7 @@ public class PlaceController {
 
   /**
    * Supprime un foyer de l'utilisateur
+   *
    * @param id
    */
   @DeleteMapping("/{id}")

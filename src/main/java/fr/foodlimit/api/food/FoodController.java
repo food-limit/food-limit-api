@@ -1,7 +1,6 @@
 package fr.foodlimit.api.food;
 
 import fr.foodlimit.api.place.PlaceService;
-import fr.foodlimit.api.security.jwt.JWTFilter;
 import fr.foodlimit.api.security.jwt.TokenProvider;
 import fr.foodlimit.api.shared.models.Food;
 import fr.foodlimit.api.shared.models.Place;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Ressource FoodController

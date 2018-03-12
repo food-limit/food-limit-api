@@ -15,6 +15,7 @@ public interface FoodRepository extends CrudRepository<Food, Long> {
 
   /**
    * Récupère une liste d'aliments en fonction d'un foyer
+   *
    * @param place
    * @return
    */
@@ -22,6 +23,7 @@ public interface FoodRepository extends CrudRepository<Food, Long> {
 
   /**
    * Récupère une denrée alimentaire par l'id
+   *
    * @param id
    * @return
    */

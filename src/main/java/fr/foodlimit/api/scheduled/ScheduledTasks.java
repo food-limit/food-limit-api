@@ -34,12 +34,12 @@ public class ScheduledTasks {
 
   private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-  @Scheduled(cron="0 0 19 * * *")
+  @Scheduled(cron = "0 0 19 * * *")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-    for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext();) {
+    for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext(); ) {
       Food food = i.next();
-      if(LocalDate.now().plusDays(3).isAfter(food.getDlc())){
+      if (LocalDate.now().plusDays(3).isAfter(food.getDlc())) {
         this.sendNotif(httpClient, food);
       }
     }
@@ -59,7 +59,7 @@ public class ScheduledTasks {
       JSONObject json = new JSONObject();
       json.put("app_id", appId);
       json.put("headings", new JSONObject().put("en", "FOOD-LIMIT"));
-      json.put("contents", new JSONObject().put("en", "Votre aliment '"+food.getName()+"' arrive à sa date de péremption !"));
+      json.put("contents", new JSONObject().put("en", "Votre aliment '" + food.getName() + "' arrive à sa date de péremption !"));
       json.put("filters", new JSONArray().put(
         new JSONObject()
           .put("field", "tag")

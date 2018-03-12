@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Ressource PingController
- *
+ * <p>
  * Cette ressource sert à vérifier que l'application tourne du contrôleur jusqu'à la base de données
  */
 @RestController
@@ -17,6 +17,7 @@ public class PingController {
 
   /**
    * Récupère un pong
+   *
    * @return
    */
   @GetMapping("/ping")

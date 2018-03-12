@@ -31,7 +31,7 @@ public class Food {
 
   @JsonIgnore
   @ManyToOne
-  @JoinColumn(name="PLACE_ID")
+  @JoinColumn(name = "PLACE_ID")
   private Place place;
 }
 

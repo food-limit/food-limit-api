@@ -14,6 +14,7 @@ public class PingService {
 
   /**
    * Récupère un pong
+   *
    * @return
    */
   public String getPing() {

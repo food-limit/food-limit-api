@@ -33,6 +33,7 @@ public class TokenProvider {
 
   /**
    * Création d'un token
+   *
    * @param username
    * @return
    */
@@ -47,6 +48,7 @@ public class TokenProvider {
 
   /**
    * Récupéreration de l'utilisateur concerné par le JWT
+   *
    * @param token
    * @return
    */
@@ -60,6 +62,7 @@ public class TokenProvider {
 
   /**
    * Récupération de l'identifiant en fonction d'un token
+   *
    * @param token
    * @return
    */
