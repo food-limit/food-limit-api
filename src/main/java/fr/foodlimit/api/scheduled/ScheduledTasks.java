@@ -34,7 +34,7 @@ public class ScheduledTasks {
 
   private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-  @Scheduled(cron = "0 0 19 * * *")
+  @Scheduled(cron = "0 0 12 * * *", zone="UTC")
   public void notifyAllUsersWithExpiredFoodsIn3Days() throws IOException {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     for (Iterator<Food> i = foodService.getFoods().iterator(); i.hasNext(); ) {
